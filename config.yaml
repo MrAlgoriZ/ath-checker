@@ -1,21 +1,21 @@
 priority_tokens:
-  - "BTCUSDT",
-  - "ETHUSDT",
-  - "BNBUSDT",
-  - "ADAUSDT",
-  - "SOLUSDT",
-  - "DOTUSDT",
-  - "ATOMUSDT",
-  - "NEARUSDT",
-  - "AVAXUSDT",
-  - "MATICUSDT",
+  - "BTCUSDT"
+  - "ETHUSDT"
+  - "BNBUSDT"
+  - "ADAUSDT"
+  - "SOLUSDT"
+  - "DOTUSDT"
+  - "ATOMUSDT"
+  - "NEARUSDT"
+  - "AVAXUSDT"
+  - "MATICUSDT"
 
 only_priority_tokens: false
 filter_trash_tokens: true
 token_check_interval_seconds: 1
 
-alert_on_priority_token: 
+alert_on_priority_tokens:
   enabled: true
   timeout_minutes: 10
-  chat_id: "<your_chat_id>"
-  telegram_token: "<your_telegram_token>"
+  chat_id: "7115367602"
+  telegram_token: "8596323715:AAE09zFcEIXEAOUtuXty1In2-OO66PhLkQQ"
