@@ -6,6 +6,7 @@ pub struct Config {
     pub only_priority_tokens: bool,
     pub filter_trash_tokens: bool,
     pub token_check_interval_seconds: usize,
+    pub alert_on_priority_tokens: AlertConfig,
 }
 
 impl Default for Config {
@@ -26,6 +27,20 @@ impl Default for Config {
             only_priority_tokens: false,
             filter_trash_tokens: true,
             token_check_interval_seconds: 10,
+            alert_on_priority_tokens: AlertConfig {
+                enabled: false,
+                timeout_minutes: 30,
+                chat_id: "".to_string(),
+                telegram_token: "".to_string()
+            },
         }
     }
+}
+
+#[derive(Debug, Deserialize, Serialize, Clone)]
+pub struct AlertConfig {
+    pub enabled: bool,
+    pub timeout_minutes: usize,
+    pub chat_id: String,
+    pub telegram_token: String
 }

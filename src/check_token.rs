@@ -1,12 +1,13 @@
+use crate::config::config_types::Config;
+
 use crate::client::BinanceClient;
-use crate::config::config::load_config;
 use crate::types::TokenCaps;
 
 use std::collections::{HashMap, HashSet};
+use std::fmt::Write;
 
-pub async fn check() {
+pub async fn check(config: Config, only_priority_tokens: bool, must_return: bool) -> String {
     let client = BinanceClient::new().await;
-    let config: crate::config::config_types::Config = load_config("config.yaml");
 
     let prices = client.get_tokens_prices().await;
     let price_map: HashMap<String, f64> = prices.into_iter().map(|p| (p.symbol, p.price)).collect();
@@ -20,6 +21,8 @@ pub async fn check() {
 
     let mut processed = HashSet::new();
 
+    let mut message = String::new();
+
     for symbol in priority_tokens {
         if let Some(current_price) = price_map.get(&symbol) {
             let ath = client.get_ath(&symbol).await;
@@ -32,18 +35,27 @@ pub async fn check() {
 
             if token_cap.check_ath_fall(ath, *current_price) {
                 println!(
-                    "{} упал от ATH {:.2}% (ПРИОРИТЕТ)",
+                    "{} fallen of ATH {:.2}% (PRIORITY)",
                     symbol,
                     (ath - current_price) / ath * 100.0
                 );
+                if must_return {
+                    writeln!(
+                        &mut message,
+                        "{} fallen of ATH {:.2}% (PRIORITY)",
+                        symbol,
+                        (ath - current_price) / ath * 100.0
+                    )
+                    .ok();
+                }
             }
 
             processed.insert(symbol);
         }
     }
 
-    if config.only_priority_tokens {
-        return;
+    if only_priority_tokens {
+        return message;
     }
 
     for token_cap in &token_caps.tokens {
@@ -59,11 +71,22 @@ pub async fn check() {
                     || (client.get_volatility(&token_cap.token, "1d", 31).await) > 0.03)
             {
                 println!(
-                    "{} упал от ATH {:.2}%",
+                    "{} fallen of ATH {:.2}%",
                     token_cap.token,
                     (ath - current_price) / ath * 100.0
                 );
+                if must_return {
+                    writeln!(
+                        &mut message,
+                        "{} fallen of ATH {:.2}%",
+                        token_cap.token,
+                        (ath - current_price) / ath * 100.0
+                    )
+                    .ok();
+                }
             }
         }
     }
+
+    message
 }

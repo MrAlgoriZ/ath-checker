@@ -13,3 +13,9 @@ priority_tokens:
 only_priority_tokens: false
 filter_trash_tokens: true
 token_check_interval_seconds: 1
+
+alert_on_priority_token: 
+  enabled: true
+  timeout_minutes: 10
+  chat_id: "<your_chat_id>"
+  telegram_token: "<your_telegram_token>"
