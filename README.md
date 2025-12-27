@@ -20,7 +20,6 @@ You can set **"priority_tokens"**, they are filled with the "-" sign. This field
 
 **"token_check_interval_seconds"** - additional delay between checks of each token (in seconds).
 
-*// (Not implemented yet, but will be ready soon)*
 **"alert_on_priority_token"** - allows notifying about drops in **"priority_tokens"** within a certain interval via Telegram. Parameters are configured: Enabled (**enabled**); **timeout_minutes** (interval in minutes); **chat_id** (your chat_id in Telegram); **telegram_token** (your bot token, can be obtained at https://t.me/BotFather)
 
 ## License and Dependencies
