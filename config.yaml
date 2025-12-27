@@ -1,0 +1,15 @@
+priority_tokens:
+  - "BTCUSDT",
+  - "ETHUSDT",
+  - "BNBUSDT",
+  - "ADAUSDT",
+  - "SOLUSDT",
+  - "DOTUSDT",
+  - "ATOMUSDT",
+  - "NEARUSDT",
+  - "AVAXUSDT",
+  - "MATICUSDT",
+
+only_priority_tokens: false
+filter_trash_tokens: true
+token_check_interval_seconds: 1

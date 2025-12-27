@@ -6,3 +6,5 @@ edition = "2024"
 [dependencies]
 binance = { git = "https://github.com/ccxt/binance-rs.git" }
 tokio = { version = "1", features = ["full"] }
+serde = { version = "1", features = ["derive"] }
+serde_yaml = { version = "0.9.33" }

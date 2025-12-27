@@ -91,4 +91,27 @@ impl BinanceClient {
             )
             .await;
     }
+
+    pub async fn get_volatility(&self, symbol: &str, timeframe: &str, limit: usize) -> f64 {
+        let klines = self.fetch_ohlcv(symbol, timeframe, limit).await;
+
+        if klines.is_empty() {
+            return 0.0;
+        }
+
+        let mut volatilities = Vec::with_capacity(klines.len());
+
+        for candle in klines.iter() {
+            let high = candle.high;
+            let low = candle.low;
+            let open = candle.open;
+            let volatility = (high - low) / open;
+            volatilities.push(volatility);
+        }
+
+        let sum = volatilities.iter().sum::<f64>();
+        let avg = sum / volatilities.len() as f64;
+
+        avg
+    }
 }
