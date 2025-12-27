@@ -5,6 +5,7 @@ use crate::types::TokenCaps;
 
 use std::collections::{HashMap, HashSet};
 use std::fmt::Write;
+use std::time::Duration;
 
 pub async fn check(config: Config, only_priority_tokens: bool, must_return: bool) -> String {
     let client = BinanceClient::new().await;
@@ -52,6 +53,11 @@ pub async fn check(config: Config, only_priority_tokens: bool, must_return: bool
 
             processed.insert(symbol);
         }
+
+        tokio::time::sleep(Duration::from_secs(
+            config.token_check_interval_seconds as u64,
+        ))
+        .await;
     }
 
     if only_priority_tokens {
@@ -86,6 +92,10 @@ pub async fn check(config: Config, only_priority_tokens: bool, must_return: bool
                 }
             }
         }
+        tokio::time::sleep(Duration::from_secs(
+            config.token_check_interval_seconds as u64,
+        ))
+        .await;
     }
 
     message
