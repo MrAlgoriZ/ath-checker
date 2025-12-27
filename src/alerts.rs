@@ -25,16 +25,18 @@ impl TelegramHandler {
 
         let chat_id: i64 = alert_cfg.chat_id.parse().expect("Invalid telegram chat_id");
 
-        let interval = Duration::from_secs(self.config.token_check_interval_seconds as u64);
+        let interval = Duration::from_mins(self.config.token_check_interval_seconds as u64);
 
         println!("\x1b[32m[INFO]\x1b[0m Telegram bot started");
 
         loop {
             let message = check(self.config.clone(), true, true).await;
-            let text = format!("🚨 Alert:\n{}", message);
+            if !message.is_empty() {
+                let text = format!("🚨 Alert:\n{}", message);
 
-            if let Err(err) = bot.send_message(ChatId(chat_id), text).await {
-                eprintln!("Failed to send telegram message: {:?}", err);
+                if let Err(err) = bot.send_message(ChatId(chat_id), text).await {
+                    eprintln!("Failed to send telegram message: {:?}", err);
+                }
             }
             tokio::time::sleep(interval).await;
         }
